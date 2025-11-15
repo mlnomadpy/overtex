@@ -27,7 +27,7 @@ const logType = (log: string) => {
 <template>
   <div class="h-full flex flex-col bg-background">
     <!-- Header -->
-    <div class="border-b px-4 py-2 flex items-center justify-between">
+    <div class="border-b px-3 md:px-4 py-2 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <Terminal class="h-4 w-4 text-muted-foreground" />
         <h3 class="text-sm font-semibold">Build Output</h3>
@@ -41,16 +41,20 @@ const logType = (log: string) => {
           variant="ghost"
           size="sm"
           @click="copyLogs"
+          class="h-8 w-8 p-0 md:h-auto md:w-auto md:px-3"
         >
           <Copy class="h-3 w-3" />
+          <span class="ml-2 hidden md:inline">Copy</span>
         </Button>
         <Button
           v-if="hasLogs"
           variant="ghost"
           size="sm"
           @click="clearLogs"
+          class="h-8 w-8 p-0 md:h-auto md:w-auto md:px-3"
         >
           <Trash2 class="h-3 w-3" />
+          <span class="ml-2 hidden md:inline">Clear</span>
         </Button>
       </div>
     </div>
