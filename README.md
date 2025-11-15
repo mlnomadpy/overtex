@@ -237,25 +237,25 @@ overtex/
 
 ## 🚀 Installation & Setup
 
-### Quick Start (5 minutes)
+### Quick Start (3 Steps)
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/mlnomadpy/overtex.git
 cd overtex
 
-# 2. Install TeX Live (Ubuntu/Debian)
+# 2. Install dependencies
+cd frontend && npm install
+cd ../server && npm install
+cd ..
+
+# 3. Install TeX Live
 sudo bash scripts/install-texlive.sh
-
-# 3. Install frontend dependencies
-cd frontend
-npm install
-
-# 4. Start the development server
-npm run dev
-
-# 5. Open browser to http://localhost:5173
 ```
+
+Then see [Usage](#usage) section below to start the servers.
+
+---
 
 ### Detailed Installation Steps
 
@@ -268,17 +268,39 @@ cd overtex
 
 Or download and extract the ZIP file from GitHub.
 
-#### Step 2: Install TeX Live
+#### Step 2: Install Node.js Dependencies
+
+OverTeX has two components that need dependencies installed:
+
+**Frontend (Vue + Vite):**
+```bash
+cd frontend
+npm install
+```
+
+**Backend (Express API):**
+```bash
+cd ../server
+npm install
+```
+
+**Return to project root:**
+```bash
+cd ..
+```
+
+#### Step 3: Install TeX Live
 
 **Option A: Automated Installation (Recommended)**
 
 ```bash
-# Make the script executable
-chmod +x scripts/install-texlive.sh
-
-# Run with sudo (required for system installation)
+# Run the provided installation script
 sudo bash scripts/install-texlive.sh
 ```
+
+When prompted, choose:
+- **Option 1**: Minimal install (~500MB, faster, includes common packages)
+- **Option 2**: Full install (~5GB, slower, includes all packages)
 
 The script will:
 - Update your package lists
@@ -290,27 +312,16 @@ The script will:
 **Option B: Manual Installation (Ubuntu/Debian)**
 
 ```bash
-# Full installation (~6GB, includes all packages)
+# Full installation (~5GB, includes all packages)
 sudo apt update
 sudo apt install -y texlive-full latexmk
 
-# Minimal installation (~1GB, basic packages only)
+# OR Minimal installation (~500MB, basic packages only)
 sudo apt install -y texlive-latex-base texlive-latex-recommended \
                     texlive-latex-extra latexmk
 ```
 
-**Option C: Custom TeX Live Installation**
-
-Download the official installer from [tug.org/texlive](https://www.tug.org/texlive/):
-
-```bash
-wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-tar -xzf install-tl-unx.tar.gz
-cd install-tl-*
-sudo ./install-tl
-```
-
-#### Step 3: Verify TeX Live Installation
+#### Step 4: Verify TeX Live Installation
 
 ```bash
 # Check pdflatex
