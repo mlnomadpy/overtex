@@ -340,6 +340,216 @@ pdflatex -output-directory=test test/test.tex
 rm -rf test
 ```
 
+---
+
+## 🎮 Usage
+
+### Starting the Application
+
+OverTeX requires **two servers** to run simultaneously:
+1. **Backend Server** (Express API on port 3000)
+2. **Frontend Server** (Vite dev server on port 5173)
+
+#### Method 1: Two Terminals (Recommended for Development)
+
+Open two separate terminal windows/tabs:
+
+**Terminal 1 - Backend Server:**
+```bash
+cd server
+npm run dev
+```
+
+Expected output:
+```
+🚀 OverTeX API Server running on http://localhost:3000
+📄 PDF endpoint: http://localhost:3000/api/pdf
+🔨 Build endpoint: http://localhost:3000/api/build
+```
+
+**Terminal 2 - Frontend Server:**
+```bash
+cd frontend
+npm run dev
+```
+
+Expected output:
+```
+  VITE v7.2.2  ready in 335 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+```
+
+**Open in Browser:**
+```bash
+# Linux
+xdg-open http://localhost:5173
+
+# macOS
+open http://localhost:5173
+
+# Or manually navigate to http://localhost:5173
+```
+
+#### Method 2: Using tmux (Single Terminal)
+
+```bash
+# Install tmux if needed
+sudo apt-get install tmux
+
+# Start tmux session
+tmux new-session -s overtex
+
+# Split window horizontally (creates top/bottom panes)
+# Press: Ctrl+b then "
+
+# Top pane - Start backend
+cd server && npm run dev
+
+# Switch to bottom pane
+# Press: Ctrl+b then ↓ (down arrow)
+
+# Bottom pane - Start frontend
+cd frontend && npm run dev
+
+# Detach from session (keeps it running)
+# Press: Ctrl+b then d
+
+# Later, reattach to session
+tmux attach -t overtex
+
+# Kill session when done
+tmux kill-session -t overtex
+```
+
+#### Method 3: Using GNU Screen
+
+```bash
+# Install screen if needed
+sudo apt-get install screen
+
+# Start backend in detached screen
+screen -S overtex-backend -dm bash -c "cd server && npm run dev"
+
+# Start frontend in detached screen
+screen -S overtex-frontend -dm bash -c "cd frontend && npm run dev"
+
+# View running screens
+screen -ls
+
+# Attach to view backend logs
+screen -r overtex-backend
+# Press: Ctrl+a then d to detach
+
+# Attach to view frontend logs
+screen -r overtex-frontend
+# Press: Ctrl+a then d to detach
+
+# Kill screens when done
+screen -S overtex-backend -X quit
+screen -S overtex-frontend -X quit
+```
+
+#### Method 4: Background Processes (Quick & Dirty)
+
+```bash
+# Start both servers in background
+cd server && npm run dev > ../logs/backend.log 2>&1 &
+cd frontend && npm run dev > ../logs/frontend.log 2>&1 &
+
+# View logs
+tail -f logs/backend.log
+tail -f logs/frontend.log
+
+# Stop servers (find PIDs and kill)
+ps aux | grep "npm run dev"
+kill <PID>
+```
+
+---
+
+### Using the Application
+
+Once both servers are running:
+
+1. **Open Browser**: Navigate to `http://localhost:5173`
+
+2. **Edit LaTeX Document**: 
+   ```bash
+   # Open the sample document
+   nano tex/main.tex
+   # or use your preferred editor
+   code tex/main.tex
+   vim tex/main.tex
+   ```
+
+3. **Build & View**:
+   - Click the **"Refresh PDF"** button in the UI
+   - Wait for compilation (status shown in UI)
+   - PDF appears in the embedded viewer
+   - Build logs shown at the bottom (expandable)
+
+4. **Iterate**:
+   - Make changes to `tex/main.tex`
+   - Click "Refresh PDF" again
+   - Repeat as needed
+
+### Application Features
+
+- **PDF Viewer**: 
+  - Zoom controls (browser native)
+  - Page navigation
+  - Scroll through document
+  - Full-screen mode (browser native)
+
+- **Build Panel**:
+  - One-click compilation
+  - Build status indicator (idle/building/success/error)
+  - Source file path display
+  - Success/error messages
+
+- **Log Viewer**:
+  - Collapsible panel
+  - Full compilation output
+  - Syntax highlighting
+  - Clear logs button
+
+---
+
+### Stopping the Application
+
+#### If Running in Separate Terminals
+Press `Ctrl+C` in each terminal window.
+
+#### If Using tmux
+```bash
+tmux kill-session -t overtex
+```
+
+#### If Using GNU Screen
+```bash
+screen -S overtex-backend -X quit
+screen -S overtex-frontend -X quit
+```
+
+#### If Running in Background
+```bash
+# Find the process IDs
+ps aux | grep "npm run dev"
+
+# Kill both processes
+kill <backend-PID> <frontend-PID>
+
+# Or kill all Node processes (⚠️ be careful!)
+pkill -f "npm run dev"
+```
+
+---
+
+
+
 #### Step 4: Install Node.js (if not already installed)
 
 **Ubuntu/Debian:**
