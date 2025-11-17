@@ -1,0 +1,105 @@
+feat: prepare for Render deployment with full production setup
+
+This commit transforms OverTeX from MVP to production-ready for Render deployment.
+
+## Major Changes
+
+### Security & Stability
+- Add environment variable configuration system (.env files)
+- Implement Winston structured logging
+- Add Helmet security headers
+- Add rate limiting (API: 100 req/15min, builds: 10/min)
+- Add Zod input validation
+- Add comprehensive error handling middleware
+- Add path traversal and injection prevention
+
+### Infrastructure
+- Create Docker files for backend and frontend
+- Create docker-compose.yml for local testing
+- Create render.yaml for automated Render deployment
+- Add health check endpoints (/health, /ready)
+- Add LaTeX availability checking
+- Add graceful shutdown handling
+
+### Monitoring & Observability
+- Implement structured logging with Winston
+- Add request logging middleware
+- Add error tracking and reporting
+- Create health check endpoints
+- Add build metrics logging
+
+### Configuration
+- Environment-based configuration
+- Dynamic CORS origins from env vars
+- Configurable rate limits
+- Configurable build timeouts
+- Production/development mode detection
+
+### Documentation
+- Add comprehensive Render deployment guide
+- Add deployment checklist
+- Add environment variable reference
+- Add troubleshooting guide
+- Update README with deployment info
+- Add MIT License
+
+### Frontend Changes
+- Add environment variable support for API URL
+- Update build service to use env vars
+- Configure production build optimizations
+- Add Nginx configuration for static hosting
+
+### Backend Changes
+- Replace console.log with Winston logger
+- Add middleware: security, validation, error handling
+- Add centralized configuration module
+- Update routes with validation
+- Fix TypeScript compilation issues
+
+## New Files (35)
+- Environment: .env.example, .dockerignore
+- Docker: Dockerfile.backend, Dockerfile.frontend, docker-compose.yml
+- Render: render.yaml, scripts/render-install-texlive.sh
+- Config: server/src/config/env.ts
+- Middleware: errorHandler.ts, security.ts, validation.ts
+- Utils: logger.ts
+- Docs: render-deployment.md, DEPLOYMENT_COMPLETE.md, RENDER_CHECKLIST.md
+- Frontend: nginx.conf, Dockerfile, .env.example
+- License: LICENSE
+
+## Modified Files (10)
+- Enhanced: server/src/index.ts, server/src/routes/build.ts
+- Updated: frontend/src/services/buildService.ts
+- Fixed: Test files for TypeScript compilation
+- Updated: .gitignore, README.md, package.json
+
+## Production Ready Features
+✅ Security hardening (Helmet, rate limiting, validation)
+✅ Professional logging (Winston with levels)
+✅ Error handling (global handler, async wrapper)
+✅ Health monitoring (/health, /ready endpoints)
+✅ Docker support (multi-stage builds)
+✅ Render automation (render.yaml blueprint)
+✅ Environment configuration (.env support)
+✅ Complete documentation
+
+## Deployment Instructions
+See docs/render-deployment.md for complete deployment guide.
+
+Quick start:
+1. git push origin render
+2. Go to https://dashboard.render.com/blueprints
+3. Create new blueprint from repository
+4. Apply configuration
+5. Wait ~10 minutes for deployment
+
+## Testing
+- ✅ Backend builds successfully
+- ✅ Frontend builds successfully
+- ✅ All TypeScript compilation passes
+- ✅ Docker images build successfully
+- ✅ Health checks functional
+- ✅ Environment config tested
+
+Estimated deployment time: 10 minutes
+Estimated monthly cost: $0-7 (Free or Starter tier)

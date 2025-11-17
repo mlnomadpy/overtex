@@ -70,6 +70,21 @@ web_modules/
 .env.*
 !.env.example
 
+# LaTeX auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+
+# Logs directory
+logs/
+*.log
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

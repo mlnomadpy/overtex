@@ -39,6 +39,7 @@ cd frontend && npm run dev    # Terminal 2
 - **[Installation Guide](./docs/installation.md)** - Complete setup instructions
 - **[Local Linux Installation](./docs/local-installation.md)** - For Ubuntu/Debian systems
 - **[GitHub Codespaces Setup](./docs/github-codespaces.md)** - Cloud development environment
+- **[Render Deployment](./docs/render-deployment.md)** - Deploy to production on Render
 - **[Usage Guide](./docs/usage.md)** - How to use OverTeX
 
 ### Reference

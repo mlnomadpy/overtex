@@ -11,12 +11,21 @@
     "test": "vitest",
     "test:run": "vitest run"
   },
-  "keywords": ["latex", "pdf", "build"],
+  "keywords": [
+    "latex",
+    "pdf",
+    "build"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "winston": "^3.18.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

@@ -5,16 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { useBuild } from '@/composables/useBuild'
 import { buildService } from '@/services/buildService'
 
-interface Props {
-  onBuildComplete?: () => void
-}
-
-const props = defineProps<Props>()
 const emit = defineEmits<{
   buildComplete: [pdfUrl: string]
 }>()
 
-const { isBuilding, buildSuccess, buildError, buildLogs, triggerBuild } = useBuild()
+const { isBuilding, buildSuccess, buildError, triggerBuild } = useBuild()
 
 const statusText = computed(() => {
   if (isBuilding.value) return 'Building...'

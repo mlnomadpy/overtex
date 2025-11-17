@@ -18,7 +18,7 @@ interface Props {
   logsVisible: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emit = defineEmits<{
   toggleSidebar: []
   toggleLogs: []

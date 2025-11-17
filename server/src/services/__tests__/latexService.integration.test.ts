@@ -7,10 +7,12 @@ import { promisify } from 'util'
 const execPromise = promisify(exec)
 
 describe('latexService integration tests', () => {
+  let isLatexInstalled = false
+
   beforeAll(async () => {
     // Check if latexmk is installed
-    const isInstalled = await latexService.checkLatexInstalled()
-    if (!isInstalled) {
+    isLatexInstalled = await latexService.checkLatexInstalled()
+    if (!isLatexInstalled) {
       console.warn('⚠️  latexmk not installed - skipping integration tests')
       console.warn('Run: sudo apt install texlive-latex-base latexmk')
     }
@@ -37,22 +39,23 @@ Transcript written on main.log.`
     expect(pdfPath).toContain('/workspaces/overtex/tex/output.pdf')
   })
 
-  it.skipIf(!(await latexService.checkLatexInstalled()))(
-    'should build real LaTeX document',
-    async () => {
-      const result = await latexService.build('main.tex', 'tex')
+  it('should build real LaTeX document', async () => {
+    if (!isLatexInstalled) {
+      console.warn('Skipping test - LaTeX not installed')
+      return
+    }
 
-      console.log('Build result:', result)
+    const result = await latexService.build('main.tex', 'tex')
 
-      expect(result.success).toBe(true)
-      expect(result.message).toContain('success')
-      expect(result.logs.length).toBeGreaterThan(0)
-      
-      // Check that PDF was created
-      if (result.outputPath) {
-        expect(existsSync(result.outputPath)).toBe(true)
-      }
-    },
-    { timeout: 30000 }
-  )
+    console.log('Build result:', result)
+
+    expect(result.success).toBe(true)
+    expect(result.message).toContain('success')
+    expect(result.logs.length).toBeGreaterThan(0)
+    
+    // Check that PDF was created
+    if (result.outputPath) {
+      expect(existsSync(result.outputPath)).toBe(true)
+    }
+  }, 30000)
 })

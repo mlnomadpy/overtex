@@ -1,0 +1,66 @@
+# Multi-stage build for backend
+FROM node:20-alpine AS builder
+
+# Install TeX Live (minimal)
+RUN apk add --no-cache \
+    texlive \
+    texlive-luatex \
+    texmf-dist-latexextra \
+    texmf-dist-fontsextra
+
+WORKDIR /app
+
+# Copy package files
+COPY server/package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
+COPY server/ ./
+
+# Build TypeScript
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine
+
+# Install TeX Live
+RUN apk add --no-cache \
+    texlive \
+    texlive-luatex \
+    texmf-dist-latexextra \
+    texmf-dist-fontsextra
+
+# Create app directory
+WORKDIR /app
+
+# Copy built application and dependencies
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+# Create tex directory
+RUN mkdir -p /app/tex && chmod 777 /app/tex
+
+# Create logs directory
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Change ownership
+RUN chown -R nodejs:nodejs /app
+
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start server
+CMD ["node", "dist/index.js"]
